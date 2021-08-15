@@ -85,6 +85,32 @@ void playFile() {
           putWord(block_len_pause);
         }
         break;
+      case ID12:
+        block_pulse_pilot = readPulse();
+        block_len_pilot = readWord();
+        putByte(TONE);
+        putWord(block_len_pilot);
+        putWord(block_pulse_pilot);
+        break;
+      case ID14:
+        block_pulses_data[0] = readPulse();
+        block_pulses_data[1] = readPulse();
+        block_last_byte_bits = file.read();
+        block_len_pause = readWord();
+        block_len_data = read24Bits();
+        putByte(DATA);
+        put24Bits(block_len_data*16);
+        putWord(block_pulses_data[0]);
+        putWord(block_pulses_data[1]);
+        putByte((8-block_last_byte_bits)*2);
+        for(block_len_data;block_len_data>0;block_len_data--) {
+          putByte(file.read());
+        }
+        if(block_len_pause) {
+          putByte(PAUSE);
+          putWord(block_len_pause);
+        }
+        break;
       case ID15:
         block_pulses_data[0] = readPulse();
         block_len_pause = readWord();
@@ -105,13 +131,39 @@ void playFile() {
           putWord(block_len_pause);
         }
         break;
+      case ID20:
+        block_len_pause = readWord();
+        if(block_len_pause) {
+          putByte(PAUSE);
+          putWord(block_len_pause);
+        } else {
+          putByte(STOP);
+          for(;;);
+        }
+        break;
+      case ID21:
+        block_len_data = file.read();
+        for(block_len_data;block_len_data>0;block_len_data--) {
+          file.read();
+        }
+        break;
+      case ID22:
+        break;
       case ID30:
         block_len_data = file.read();
         for(block_len_data;block_len_data>0;block_len_data--) {
           file.read();
         }
         break;
+      case EOF:
+        putByte(STOP);
+        for(;;);
       default:
+        #if defined(ARDUINO_BLUEPILL_F103CB)
+           Serial.print("Unknown block ID: ");
+           Serial.print(block_id, HEX);
+           Serial.print("\r\n\r\n");
+        #endif       
         putByte(STOP);
         for(;;);
                
