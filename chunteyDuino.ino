@@ -7,7 +7,7 @@ volatile uint8_t current_signal = NONE, current_byte, last_byte_adjust = 0, next
 volatile uint16_t buffer_read, current_sample, previous_sample;
 volatile int32_t pulses = 0;
   
-char fileName[17] = "manic-otla.tzx";
+char fileName[17] = "hoh.cdt";
 
 #if defined(ARDUINO_BLUEPILL_F103CB)
   HardwareTimer *Timer = new HardwareTimer(TIM3);
@@ -25,7 +25,7 @@ void setup() {
 
   #if defined(ARDUINO_BLUEPILL_F103CB)
     Timer->setPrescaleFactor(4);
-    Timer->setMode(1, TIMER_OUTPUT_COMPARE);
+    Timer->setMode(1, TIMER_OUTPUT_COMPARE_ACTIVE);
     Timer->setCaptureCompare(1, 1);
     Timer->attachInterrupt(1, output);
     Timer->refresh();  
