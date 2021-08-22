@@ -92,6 +92,14 @@ void playFile() {
         putWord(block_len_pilot);
         putWord(block_pulse_pilot);
         break;
+      case ID13:
+        block_len_data = file.read();
+        putByte(PULSES);
+        putByte(block_len_data);
+        for(block_len_data;block_len_data>0;block_len_data--) {
+          putWord(readPulse());
+        }
+        break;
       case ID14:
         block_pulses_data[0] = readPulse();
         block_pulses_data[1] = readPulse();

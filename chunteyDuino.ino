@@ -7,7 +7,7 @@ volatile uint8_t current_signal = NONE, current_byte, last_byte_adjust = 0, next
 volatile uint16_t buffer_read, current_sample, previous_sample;
 volatile int32_t pulses = 0;
   
-char fileName[17] = "hoh.cdt";
+char fileName[17] = "input.cdt";
 
 #if defined(ARDUINO_BLUEPILL_F103CB)
   HardwareTimer *Timer = new HardwareTimer(TIM3);

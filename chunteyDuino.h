@@ -50,6 +50,7 @@
 #define ID10                  0x10              // standard speed data block
 #define ID11                  0x11              // turbo speed data block
 #define ID12                  0x12              // pure tone
+#define ID13                  0x13              // pulse sequence
 #define ID14                  0x14              // pure data block
 #define ID15                  0x15              // direct recording block
 #define ID20                  0x20              // pause or stop
