@@ -15,7 +15,7 @@ At the time of writing, chunteyDuino consists of two main parts:-
 
 1. The file processor - which reads the input file from the SDCard, parses the file structure (currently only TZX/CDT files), converts to an simplified internal format and fills a FIFO buffer. This runs in a loop, checking if the buffer is filled and fetching more data from the SD card if it is not.
 
-2. The pulse generator - this is an interrupt routine which reads from the FIFO buffer, parses the internal format and generates digital pulses on the ArduiTape's output pin.
+2. The pulse generator - this is an interrupt routine which reads from the FIFO buffer, parses the internal format and generates digital pulses on the microcontroller's output pin.
 
 ## Internal Format
 
