@@ -29,7 +29,6 @@ Input files are translated into a simplified internal format by the file process
 The internal format consists of a series of blocks, which in turn consist of a single byte defining the type, followed by parameters (if applicable) and then block data from the input file (if applicable).
 
 ### Block Types
-The block types are currently as follows:-
 
 Type|Name|TZX Equivalent|Parameters|Description
 ----|----|--------------|----------|-----------
@@ -63,7 +62,7 @@ _placeholder_
 
 _placeholder_
 
-### Currently Implemented TZX Block Types
+## Currently Implemented TZX Block Types
 
 ID|Description|Notes
 --|-----------|-----
