@@ -3,10 +3,10 @@ Alternative firmware for ArduiTape
 
 ## Usage
 
- * Place a .TZX/CDT file on a FAT formatted SD card with the filename matching the one defined in the chunteyDuino.ino file.
+ * Place a .TZX/CDT file in the root of a FAT formatted SD card. Make sure you rename the file to match the one defined in the chunteyDuino.ino file. (see [notes](#notes))
  * Compile the code and upload to your ArduiTape/TZXDuino, etc. using the Arduino IDE.
  * The file should playback automatically at power up/reset, so you will need to either connect power as needed, or use the reset button.
- * If the file does not play back correctly, it is likely due to the file containing a block type that is not yet implemented.
+ * If the file does not play back correctly, it is likely due to the file containing a block type that is not yet implemented. (see [here](#currently-implemented-tzx-block-types))
 
 
 ### Required Libraries
@@ -49,7 +49,7 @@ A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would cons
   **TONE: 8063 pulses, pulse length of 9911**
 * Two sync pulses  
   **PULSES: 2 pulses, first pulse length 3430, second pulse length 3780**
-* The data. The header is 19 bytes and each byte is represented by 16 pulses.  
+* The data. The header is 19 bytes and each byte is represented by 16 pulses  
   **DATA: 304 pulses, zero pulse length 3909, one pulse length 7817, no last byte adjust**
 * A one second pause  
   **PAUSE: 1000 milliseconds**
@@ -62,6 +62,36 @@ _placeholder_
 ## STM32 Blue Pill version
 
 _placeholder_
+
+### Currently Implemented TZX Block Types
+
+ID|Description|Notes
+--|-----------|-----
+ID10|Standard speed data block|
+ID11|Turbo speed data block|
+ID12|Pure tone|
+ID13|Sequence of pulses of various lengths|
+ID14|Pure data block|
+ID15|Direct recording block|
+~~ID18~~|~~CSW recording block~~|
+~~ID19~~|~~Generalized data block~~|_Impossible to fully implement due to the memory constraints of the ATMEGA328P, although a limited implementation should be possible_
+ID20|Pause (silence) or 'Stop the tape' command|
+_ID21_|_Group start_|_Partial - the 'group name' string is currently ignored_
+ID22|Group end|
+~~ID23~~|~~Jump to block~~|
+~~ID24~~|~~Loop start~~|
+~~ID25~~|~~Loop end~~|
+~~ID26~~|~~Call sequence~~|
+~~ID27~~|~~Return from sequence~~|
+~~ID28~~|~~Select block~~|
+~~ID2A~~|~~Stop the tape if in 48K mode~~|
+~~ID2B~~|~~Set signal level~~
+_ID30_|_Text description_|_Partial - the text is currently ignored_
+~~ID31~~|~~Message block~~|
+~~ID32~~|~~Archive info~~|
+~~ID33~~|~~Hardware type~~|
+~~ID35~~|~~Custom info block~~|
+~~ID5A~~|~~"Glue" block (90 dec, ASCII Letter 'Z')~~|
 
 ### Notes
 
