@@ -10,16 +10,46 @@ chunteyDuino started out back in 2019 as a proof of concept brought about by my 
 Fast-forward to August 2021 and I encountered a [YouTube video](https://www.youtube.com/watch?v=MAIsOIwgJWA) by [Noel's Retro Lab](https://www.youtube.com/channel/UC2-SP1bYi3ueKlVU7I75wFw), in which Noel experiments with pushing the limits of tape loading on the Amstrad CPC. I noticed he ran into the same issues that I encountered when trying to play back extremely fast tape loader data. So I contacted Noel and offered up chunteyDuino as a donation to his [HyperLoader project](https://github.com/llopis/HyperLoader). I had not intended to revisit it myself, but I just couldn't resist firing up my CPC and seeing how fast HyperLoader could go using chunteyDuino. So I implemented the TZX blocks required to play HyperLoader's output and gave it a go. The results were very impressive and my interest in the project was revitalized!
 
 ### Implementation
-
 At the time of writing, chunteyDuino consists of two main parts:-
-
 1. The file processor - which reads the input file from the SDCard, parses the file structure (currently only TZX/CDT files), converts to an simplified internal format and fills a FIFO buffer. This runs in a loop, checking if the buffer is filled and fetching more data from the SD card if it is not.
 
 2. The pulse generator - this is an interrupt routine which reads from the FIFO buffer, parses the internal format and generates digital pulses on the microcontroller's output pin.
 
 ## Internal Format
+Input files are translated into a simplified internal format by the file processor, which is then sent via a FIFO buffer to the pulse generator ISR. The idea of this approach is balance the amount of data passing though the buffer with the complexity of the ISR, so that the buffer is space-effective without drasically increasing the processing time spent in the ISR.
+
+The internal format consists of a series of blocks, which in turn consist of a single byte defining the type, followed by parameters (if applicable) and then block data from the input file (if applicable).
+
+### Block Types
+The block types are currently as follows:-
+
+Type|Name|TZX Equivalent|Parameters|Description
+----|----|--------------|----------|-----------
+0x00|NONE|N/A|_none_|As you would expect, this does absolutely nothing. The buffer is filled with this block type just before the start of playback.
+0x01|STOP|ID20 (zero length)|_none_|Stops playback. The signal level is set low and the interrupt timer is disabled.
+0x02|TONE|ID12|_pulse count_, _pulse length_|Plays a continuous tone of a fixed pulse length.
+0x03|PULSES|ID13|_pulse count_|Plays a series of individual pulses of varying lengths.
+0x04|DATA|ID14|_pulse count_, _pulse length zero_, _pulse length one_, _last byte adjust_|Plays a binary frequency-shift keyed (BFSK) signal.
+0x05|PAUSE|ID20 (non-zero length)|_millisecond count_|Sets the signal level low for a specified length of time.
+0x06|SAMPLE|ID15|_pulse count_, _sample period_, _last byte adjust_|Plays a stream of ones and zeros representing the signal level (0 = low, 1 = high) with a specified sample period.
+
+Pulse lengths are counted in clock cycles at the 16Mhz of the Arduino Nano, therefore the pulse length for PAUSE blocks is 16000.
+
+A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would consist of:-
+
+* The pilot tone  
+  **TONE: 8063 pulses, pulse length of 9911**
+* Two sync pulses  
+  **PULSES: 2 pulses, first pulse length 3430, second pulse length 3780**
+* The data. The header is 19 bytes and each byte is represented by 16 pulses.  
+  **DATA: 304 pulses, zero pulse length 3909, one pulse length 7817, no last byte adjust**
+* A one second pause  
+  **PAUSE: 1000 milliseconds**
+
+### Block Type Structures
 
 _placeholder_
+
 
 ## STM32 Blue Pill version
 
@@ -28,4 +58,3 @@ _placeholder_
 ### Notes
 
 Please note that this firmware is currently **_extremely_** barebones, and does not interact with the ArduiTape's buttons or screen. It reads data from a fixed file defined in the source code - so if you plan on experimenting with it, **please bear in mind it is better to rename your input file on the SD Card than to repeatedly flash your Arduino using different filenames**. I accept no responsibility if you brick your device doing so!
-
