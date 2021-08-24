@@ -66,17 +66,17 @@ _placeholder_
 
 ID|Description|Notes
 --|-----------|-----
-ID10|Standard speed data block|
-ID11|Turbo speed data block|
-ID12|Pure tone|
-ID13|Sequence of pulses of various lengths|
-ID14|Pure data block|
-ID15|Direct recording block|
+**ID10**|**Standard speed data block**|
+**ID11**|**Turbo speed data block**|
+**ID12**|**Pure tone**|
+**ID13**|**Sequence of pulses of various lengths**|
+**ID14**|**Pure data block**|
+**ID15**|**Direct recording block**|
 ~~ID18~~|~~CSW recording block~~|
 ~~ID19~~|~~Generalized data block~~|_Impossible to fully implement due to the memory constraints of the ATMEGA328P, although a limited implementation should be possible_
-ID20|Pause (silence) or 'Stop the tape' command|
+**ID20**|**Pause (silence) or 'Stop the tape' command**|
 _ID21_|_Group start_|_Partial - the 'group name' string is currently ignored_
-ID22|Group end|
+**ID22**|**Group end**|
 ~~ID23~~|~~Jump to block~~|
 ~~ID24~~|~~Loop start~~|
 ~~ID25~~|~~Loop end~~|
@@ -90,7 +90,7 @@ _ID30_|_Text description_|_Partial - the text is currently ignored_
 ~~ID32~~|~~Archive info~~|
 ~~ID33~~|~~Hardware type~~|
 ~~ID35~~|~~Custom info block~~|
-~~ID5A~~|~~"Glue" block (90 dec, ASCII Letter 'Z')~~|
+**ID5A**|**"Glue" block (90 dec, ASCII Letter 'Z')**|
 
 ### Notes
 

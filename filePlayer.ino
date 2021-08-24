@@ -163,6 +163,11 @@ void playFile() {
           file.read();
         }
         break;
+      case ID5A:
+        for(uint8_t i=0;i<9;i++) {    // skip the next nine bytes of the file
+          file.read();
+        }
+        break;
       case EOF:
         putByte(STOP);
         for(;;);

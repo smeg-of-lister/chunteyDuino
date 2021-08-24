@@ -57,4 +57,5 @@
 #define ID21                  0x21              // group start
 #define ID22                  0x22              // group end
 #define ID30                  0x30              // text description
+#define ID5A                  0x5a              // 'glue' block
 #define EOF                   0xffff
