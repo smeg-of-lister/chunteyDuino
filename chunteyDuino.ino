@@ -17,6 +17,14 @@ SdFat sd;
 SdFile file;
 
 void setup() {
+
+  #if defined(ARDUINO_BLUEPILL_F103CB)
+    pinMode(PB0, OUTPUT);
+    HAL_GPIO_WritePin(EARPORT, EARPIN, GPIO_PIN_RESET);
+  #else
+    SET(DDRB, DDB1);
+    CLEAR(EARPORT, EARPIN);
+  #endif
   
   #if defined(ARDUINO_BLUEPILL_F103CB)
     Serial.begin(9600);
@@ -52,13 +60,6 @@ void setup() {
     for (;;);
   }
 
-  #if defined(ARDUINO_BLUEPILL_F103CB)
-    pinMode(PB0, OUTPUT);
-    HAL_GPIO_WritePin(EARPORT, EARPIN, GPIO_PIN_RESET);
-  #else
-    SET(DDRB, DDB1);
-    CLEAR(EARPORT, EARPIN);
-  #endif
   delay(1000);
   
 }
