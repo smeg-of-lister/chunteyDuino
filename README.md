@@ -31,7 +31,7 @@ The internal format consists of a series of blocks, which in turn consist of a s
 ### Block Types
 
 Type|Name|TZX Equivalent|Parameters|Description
-----|----|--------------|----------|-----------
+:--:|:--:|:------------:|:---------|:----------
 0x00|NONE|N/A|_none_|As you would expect, this does absolutely nothing. The buffer is filled with this block type just before the start of playback.
 0x01|STOP|ID20 (zero length)|_none_|Stops playback. The signal level is set low and the interrupt timer is disabled.
 0x02|TONE|ID12|_pulse count_, _pulse length_|Plays a continuous tone of a fixed pulse length.
@@ -53,10 +53,56 @@ A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would cons
 * A one second pause  
   **PAUSE: 1000 milliseconds**
 
-### Block Type Structures
+### Block Structures
 
-_placeholder_
+#### 0x00: NONE
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x00|BYTE|Block type| |
 
+#### 0x01: STOP
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x01|BYTE|Block type| |
+
+#### 0x02: TONE
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x02|BYTE|Block type| |
+0x01| |WORD|Pulse count| |
+0x03| |WORD|Pulse length| |
+
+#### 0x03: PULSES
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x03|BYTE|Block type| |
+0x01|N|BYTE|Pulse count|This will likely be changed to WORD at some point
+0x02| |WORD\[N\]|Stream of pulse lengths| |
+
+#### 0x04: DATA
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x04|BYTE|Block type| |
+0x01|N|BYTE\[3\]|Pulse count| |
+0x04| |WORD|Pulse length of zero bit| |
+0x06| |WORD|Pulse length of one bit| |
+0x08| |BYTE|Adjustment for pulse count if last byte of data is not fully used|This is a bit kludgy. Will most likely change this so the adjustment to the pulse count is performed _before_ placing it in the buffer
+0x09| |BYTE\[N/16\]|Data| |
+
+#### 0x05: PAUSE
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x05|BYTE|Block type| |
+0x01| |WORD|Millisecond count| |
+
+#### 0x06: SAMPLE
+Offset|Value|Type|Description|Notes
+:----:|:---:|:--:|:----------|:----
+0x00|0x06|BYTE|Block type| |
+0x01|N|BYTE\[3\]|Pulse count| |
+0x04| |WORD|Sample period| |
+0x06| |BYTE|Adjustment for pulse count if last byte of data is not fully used|This is a bit kludgy. Will most likely change this so the adjustment to the pulse count is performed _before_ placing it in the buffer
+0x07| |BYTE\[N/8\]|Samples| |
 
 ## STM32 Blue Pill version
 
@@ -65,14 +111,14 @@ _placeholder_
 ## Currently Implemented TZX Block Types
 
 ID|Description|Notes
---|-----------|-----
+:-:|:----------|:----
 **ID10**|**Standard speed data block**|
 **ID11**|**Turbo speed data block**|
 **ID12**|**Pure tone**|
 **ID13**|**Sequence of pulses of various lengths**|
 **ID14**|**Pure data block**|
 **ID15**|**Direct recording block**|
-~~ID18~~|~~CSW recording block~~|
+~~ID18~~|~~CSW recording block~~|_Standard RLE blocks should be possible to implement, but playing zlib compressed blocks on an ATMEGA328P? No chance!_
 ~~ID19~~|~~Generalized data block~~|_Impossible to fully implement due to the memory constraints of the ATMEGA328P, although a limited implementation should be possible_
 **ID20**|**Pause (silence) or 'Stop the tape' command**|
 _ID21_|_Group start_|_Partial - the 'group name' string is currently ignored_
@@ -84,7 +130,7 @@ _ID21_|_Group start_|_Partial - the 'group name' string is currently ignored_
 ~~ID27~~|~~Return from sequence~~|
 ~~ID28~~|~~Select block~~|
 ~~ID2A~~|~~Stop the tape if in 48K mode~~|
-~~ID2B~~|~~Set signal level~~
+~~ID2B~~|~~Set signal level~~|
 _ID30_|_Text description_|_Partial - the text is currently ignored_
 ~~ID31~~|~~Message block~~|
 ~~ID32~~|~~Archive info~~|
