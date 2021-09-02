@@ -19,7 +19,7 @@ SdFile file;
 void setup() {
 
   #if defined(ARDUINO_BLUEPILL_F103CB)
-    pinMode(PB0, OUTPUT);
+    pinMode(PA8, OUTPUT);
     HAL_GPIO_WritePin(EARPORT, EARPIN, GPIO_PIN_RESET);
   #else
     SET(DDRB, DDB1);
@@ -42,6 +42,12 @@ void setup() {
     TCCR1B = 0;
     SET(TCCR1B, CS10);
     SET(TCCR1B, WGM12);
+  #endif
+
+  #if defined(ARDUINO_BLUEPILL_F103CB)
+    SPI.setMOSI(PB15);
+    SPI.setMISO(PB14);
+    SPI.setSCLK(PB13);
   #endif
 
   if (!sd.begin(SPIPIN, SPISPEED)) {

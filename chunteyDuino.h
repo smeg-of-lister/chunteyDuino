@@ -8,9 +8,9 @@
 #endif
 
 #if defined(ARDUINO_BLUEPILL_F103CB)
-  #define EARPIN              GPIO_PIN_0
-  #define EARPORT             GPIOB
-  #define SPIPIN              PA4
+  #define EARPIN              GPIO_PIN_8
+  #define EARPORT             GPIOA
+  #define SPIPIN              PB12
   #define SPISPEED            SD_SCK_MHZ(18)
 #else
   #define EARPIN              PORTB1
