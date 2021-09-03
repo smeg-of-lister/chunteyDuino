@@ -106,6 +106,12 @@ Offset|Value|Type|Description|Notes
 
 ## STM32 Blue Pill version
 
+I currently use a STM32F104C8 Blue Pill to develop chunteyDuino as I can use its USART to send debug information back to a serial console (the Arduino Nano isn't fast enough to do this with its soft serial and play back pulses at the same time). From my experiences, both the ZX Spectrum and Amstrad CPC seem happy with a non-inverting 3.3v signal being sent to their cassette input ports. See the diagram below for connections. 
+
+![](chunteyDuino_bluepill.png)
+
+### Arduino IDE configuration
+
 _placeholder_
 
 ## Currently Implemented TZX Block Types
