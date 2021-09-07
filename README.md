@@ -28,7 +28,7 @@ Input files are translated into a simplified internal format by the file process
 
 The internal format consists of a series of blocks, which in turn consist of a single byte defining the type, followed by parameters (if applicable) and then block data from the input file (if applicable).
 
-### Block Types
+#### Block Types
 
 Type|Name|TZX Equivalent|Parameters|Description
 :--:|:--:|:------------:|:---------|:----------
@@ -53,33 +53,33 @@ A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would cons
 * A one second pause  
   **PAUSE: 1000 milliseconds**
 
-### Block Structures
+#### Block Structures
 
-#### 0x00: NONE
+##### 0x00: NONE
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x00|BYTE|Block type| |
 
-#### 0x01: STOP
+##### 0x01: STOP
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x01|BYTE|Block type| |
 
-#### 0x02: TONE
+##### 0x02: TONE
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x02|BYTE|Block type| |
 0x01| |WORD|Pulse count| |
 0x03| |WORD|Pulse length| |
 
-#### 0x03: PULSES
+##### 0x03: PULSES
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x03|BYTE|Block type| |
 0x01|N|BYTE|Pulse count|This will likely be changed to WORD at some point
 0x02| |WORD\[N\]|Stream of pulse lengths| |
 
-#### 0x04: DATA
+##### 0x04: DATA
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x04|BYTE|Block type| |
@@ -89,13 +89,13 @@ Offset|Value|Type|Description|Notes
 0x08| |BYTE|Adjustment for pulse count if last byte of data is not fully used|This is a bit kludgy. Will most likely change this so the adjustment to the pulse count is performed _before_ placing it in the buffer
 0x09| |BYTE\[N/16\]|Data| |
 
-#### 0x05: PAUSE
+##### 0x05: PAUSE
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x05|BYTE|Block type| |
 0x01| |WORD|Millisecond count| |
 
-#### 0x06: SAMPLE
+##### 0x06: SAMPLE
 Offset|Value|Type|Description|Notes
 :----:|:---:|:--:|:----------|:----
 0x00|0x06|BYTE|Block type| |
@@ -106,15 +106,15 @@ Offset|Value|Type|Description|Notes
 
 ## STM32 Blue Pill version
 
-I currently use a STM32F104C8 Blue Pill to develop chunteyDuino as I can use its USART to send debug information back to a serial console (the Arduino Nano isn't fast enough to do this with its soft serial and play back pulses at the same time). From my experiences, both the ZX Spectrum and Amstrad CPC seem happy loading from a non-inverting 3.3v signal via their cassette ports. See the diagram below for connections. 
+I currently use a STM32F103C8 Blue Pill to develop chunteyDuino as I can use its USART to send debug information back to a serial console (the Arduino Nano isn't fast enough to do serial and reliably play back pulses at the same time). From my experiences, both the ZX Spectrum and Amstrad CPC seem happy loading from a non-inverting 3.3v signal via their cassette ports. See the diagram below for connections. 
 
 ![](chunteyDuino_bluepill.png)
 
-### Arduino IDE configuration
+#### Arduino IDE configuration
 
-_placeholder_
+You will need to install the STM32Duino core in the Arduino IDE and preferably the STM32 HID Bootloader on your BluePill board. A fantastic guide on how to do this is available [here](https://www.youtube.com/watch?v=Myon8H111PQ).
 
-## Currently Implemented TZX Block Types
+### Currently Implemented TZX Block Types
 
 ID|Description|Notes
 :-:|:----------|:----
