@@ -40,7 +40,7 @@ Type|Name|TZX Equivalent|Parameters|Description
 0x05|PAUSE|ID20 (non-zero length)|_millisecond count_|Sets the signal level low for a specified length of time.
 0x06|SAMPLE|ID15|_pulse count_, _sample period_, _last byte adjust_|Plays a stream of ones and zeros representing the signal level (0 = low, 1 = high) with a specified sample period.
 
-Pulse lengths are counted in clock cycles at the 16Mhz of the Arduino Nano, therefore the pulse length for PAUSE blocks is 16000.
+Pulse lengths are counted in clock cycles at the 16Mhz of the Arduino Nano (or 18Mhz on the STM32 Blue Pill), therefore the pulse length for PAUSE blocks is 16000.
 
 A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would consist of:-
 
@@ -106,7 +106,7 @@ Offset|Value|Type|Description|Notes
 
 ## STM32 Blue Pill version
 
-I currently use a STM32F103C8 Blue Pill to develop chunteyDuino as I can use its USART to send debug information back to a serial console (the Arduino Nano isn't fast enough to do serial and reliably play back pulses at the same time). From my experiences, both the ZX Spectrum and Amstrad CPC seem happy loading from a non zero-crossing 3.3v signal via their cassette ports. See the diagram below for connections. 
+I currently use a STM32F103C8 Blue Pill to develop chunteyDuino as I can use its USART to send debug information back to a serial console (the Arduino Nano isn't fast enough to do serial and reliably play back pulses at the same time). From my experiences, both the ZX Spectrum and Amstrad CPC seem happy loading from a 3.3v digital signal via their cassette ports. See the diagram below for connections. 
 
 ![](chunteyDuino_bluepill.png)
 
