@@ -24,7 +24,7 @@ At the time of writing, chunteyDuino consists of two main parts:-
 2. The pulse generator - this is an interrupt routine which reads from the FIFO buffer, parses the internal format and generates digital pulses on the microcontroller's output pin.
 
 ## Internal Format
-Input files are translated into a simplified internal format by the file processor, which is then sent via a FIFO buffer to the pulse generator ISR. The idea of this approach is balance the amount of data passing though the buffer with the complexity of the ISR, so that the buffer is space-effective without drasically increasing the processing time spent in the ISR.
+Input files are translated into a simplified internal format by the file processor, which is then sent via a FIFO buffer to the pulse generator ISR. The idea of this approach is to balance the amount of data passing though the buffer with the complexity of the ISR, so that the buffer is space-effective without drastically increasing the processing time spent in the ISR.
 
 The internal format consists of a series of blocks, which in turn consist of a single byte defining the type, followed by parameters (if applicable) and then block data from the input file (if applicable).
 
@@ -40,7 +40,7 @@ Type|Name|TZX Equivalent|Parameters|Description
 0x05|PAUSE|ID20 (non-zero length)|_millisecond count_|Sets the signal level low for a specified length of time.
 0x06|SAMPLE|ID15|_pulse count_, _sample period_, _last byte adjust_|Plays a stream of ones and zeros representing the signal level (0 = low, 1 = high) with a specified sample period.
 
-Pulse lengths are counted in clock cycles at the 16Mhz of the Arduino Nano (or 18Mhz on the STM32 Blue Pill), therefore the pulse length for PAUSE blocks is 16000.
+Pulse lengths are counted in clock cycles at the 16Mhz of the Arduino Nano, therefore the pulse length for PAUSE blocks is 16000.
 
 A standard ZX Spectrum ROM header block (as in TAP files or TZX ID10) would consist of:-
 
